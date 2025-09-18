@@ -1,0 +1,104 @@
+Changelog - September 07, 2025
+
+- Adjusted Tuesday's color to a more vibrant pink (#ff69b4) in the day color scheme.
+- Made "Today" and "Tomorrow" buttons in the popup clickable, displaying "Today" or "Tomorrow" on the "Date" button without dates.
+- Removed date display from the "Date" button when selecting a date, except for "Today" and "Tomorrow" cases.
+- Updated task name to show the selected date (e.g., "8 Sep") when a date is chosen from the calendar.
+- Reduced the "Add task" popup size from 500px to 400px, with adjusted padding and font sizes.
+- Reverted to showing full day names (e.g., "Monday") on the "Date" button when selecting dates, replacing previous quick-select labels.
+- Ensured task name updates replace the previous date when a new date is selected.
+- Modified the "Date" button to show "Today" for the current date and "Tomorrow" for the next day, with other dates showing their day names.
+- Cleared the task name when changing the date on the calendar, adding only the new date.
+- Added priority display (e.g., "P1") in front of the date in the task name when a priority is selected, clearing the task name when priority changes.
+- Removed "Next weekend" from the popup date options.
+- Ensured clicking "Today" on the calendar matches the "Today" button behavior, showing "Today" on the "Date" button with the Sunday color (#ffcccc) and updating the task name to "7 Sep".
+
+src/
+├── App.jsx                      # Updated React component for task management interface
+├── App.css                      # Updated styles for task management interface
+├── index.jsx                    # Unchanged entry point for React app
+├── index.css                    # Unchanged global styles
+public/
+└── (unchanged assets)           # Placeholder for any static assets (e.g., images), unchanged
+
+Changelog - September 08, 2025
+
+- Separated the application into multiple pages (Inbox, Today, Upcoming, Filters, Completed, Home, MyWork, Education) using React Router, moving navigation to a reusable Sidebar component.
+- Integrated the AddTaskModal into the Sidebar component, allowing the "+ Add task" button to trigger the modal globally across all pages.
+- Updated App.js to manage a global tasks state and pass the handleAddTask function to the Sidebar for task addition.
+- Created individual page components (e.g., Inbox.js) to display page-specific task lists, removing modal logic from pages.
+- Adjusted CSS to ensure compatibility with the multi-page layout, maintaining the original sidebar and modal styles.
+- Reverted the AddTaskModal trigger from the sidebar back to the main content area per page, restoring the original single-page design with tab-based navigation.
+- Fixed an issue where all sidebar buttons were highlighted when clicking "Add task" by isolating the active class to navigation items only.
+- Restored the original App.js structure with integrated sidebar and modal, undoing the multi-page setup and React Router implementation.
+- Reverted all changes to return to the initial single-page application state, including the full original CSS with modal and calendar styles.
+- Partially reverted changes to restore the state after the multi-page setup with sidebar modal integration, before moving the "Add task" button back to the main content.
+
+src/
+├── App.jsx                      # Updated to manage routing and global tasks, then reverted and partially restored
+├── components/
+│   ├── Sidebar.jsx              # Created for multi-page navigation with modal, adjusted and reverted
+│   └── AddTaskModal.jsx         # Updated for sidebar integration, unchanged in final reversion
+├── pages/
+│   ├── Inbox.jsx                # Created for page-specific content, adjusted and reverted
+│   ├── Today.jsx                # Created for page-specific content, adjusted and reverted
+│   ├── Upcoming.jsx             # Created for page-specific content, adjusted and reverted
+│   ├── Filters.jsx              # Created for page-specific content, adjusted and reverted
+│   ├── Completed.jsx            # Created for page-specific content, adjusted and reverted
+│   ├── Home.jsx                 # Created for page-specific content, adjusted and reverted
+│   ├── MyWork.jsx               # Created for page-specific content, adjusted and reverted
+│   └── Education.jsx            # Created for page-specific content, adjusted and reverted
+├── App.css                      # Adjusted for multi-page layout, then reverted to original with full modal styles
+├── index.jsx                    # Unchanged entry point for React app
+├── index.css                    # Unchanged global styles
+public/
+└── (unchanged assets)           # Placeholder for any static assets (e.g., images), unchanged
+
+Changelog - September 09, 2025
+
+- Integrated UpcomingPage with a dynamic month title based on the current week, replacing the static "September 2025" with currentWeekStart.toLocaleString, ensuring it updates when navigating to weeks in different months.
+- Added a static "Upcoming" title above the dynamic month in UpcomingPage to clearly label the section.
+- Separated CSS for UpcomingPage into a dedicated Upcoming.css file, imported into UpcomingPage.js, to improve maintainability and avoid conflicts with other components.
+- Updated App.js to pass tasks state and handleTaskAction function to UpcomingPage, enabling global task management and removal functionality.
+- Modified UpcomingPage to include a clickable circle before each task, triggering handleAction with a 'remove' action to delete tasks from the tasks state.
+- Adjusted AddTaskModal to use the current date (08:43 PM +07, September 09, 2025) for today and tomorrow calculations, ensuring accurate date picker options.
+- Updated UpcomingPage to display tasks in the "Upcoming Tasks" section with a two-row format: task title on the first row and date/time on the second row, using getTaskTimeRange to include time ranges from timeInput and durationInput.
+- Increased the size of the clickable circle in UpcomingPage to 1.5em in both CSS (.task-circle) and inline styles for better visibility and interaction.
+
+src/
+├── App.jsx                      # Updated to manage global tasks and pass handleTaskAction to UpcomingPage
+├── components/
+│   └── AddTaskModal.jsx         # Updated today date and no structural changes
+├── pages/
+│   ├── Upcoming.jsx             # Updated with dynamic month, two-row task format, and larger clickable circle
+│   └── Upcoming.css             # Created to store dedicated styles for UpcomingPage
+├── App.css                      # Unchanged
+├── index.jsx                    # Unchanged entry point for React app
+├── index.css                    # Unchanged global styles
+public/
+└── (unchanged assets)           # Placeholder for any static assets (e.g., images), unchanged
+
+Changelog - September 15, 2025
+
+- Implemented Todoist-like Upcoming two-column layout with mini calendar, week strip, and day grouping. Tasks within a day are sorted by time, then by priority (P1–P4).
+- Standardized task item layout across Inbox, Today, Upcoming, Home, MyWork, and Education: circle checkbox, priority badge, 3 rows (title, description, time/date with category on right). Upcoming hides the date and shows time only.
+- Added priority badges (P1–P4) with color coding; P1 is highest priority.
+- Sidebar counts now reflect live task totals per section and project categories.
+- Modal updates: removed Today/Tomorrow quick buttons; calendar disallows past dates; added Repeat selection label; Inbox picker sets category (Home, Work, Education). Dropdowns close on selection and outside click; footer aligned with Inbox left and actions right.
+- Category pages (Home, MyWork, Education) now show only tasks in their category, only today and future tasks, sorted by time then priority.
+- Increased size of task circle icons for better visibility.
+
+src/
+├── App.js                      # Task creation with repeat occurrences; complete action records completedAt; passes tasks and handlers to all pages
+├── App.css                     # Shared task item styles, larger circles, priority badges, modal-scoped controls
+├── components/
+│   ├── Sidebar.js              # Dynamic counts computed from tasks; opens modal
+│   └── AddTaskModal.js         # minDate calendar, repeat label, category selection, improved dropdown behavior
+├── pages/
+│   ├── Inbox.js                # 3-row task layout with priority and category
+│   ├── Today.js                # Overdue + Today sections; Today hides date
+│   ├── Upcoming.js             # Time-only row with category; sorted by time, then priority
+│   ├── Home.js                 # Category filter; today+future; sorted by time, then priority
+│   ├── MyWork.js               # Category filter; today+future; sorted by time, then priority
+│   └── Education.js            # Category filter; today+future; sorted by time, then priority
+
